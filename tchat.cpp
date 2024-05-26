@@ -11,7 +11,8 @@ void second_page(string);
 
 map<string, string> user;
 
-class someone(){
+class someone
+{
 	vector<string> flist;
 
 	struct chat{
@@ -164,5 +165,247 @@ void someone::delete_friend(string uname)
 			cout<<"\nLuckily this cringe is not your friend";
 		}
 	}
+}
+
+void page1()
+{
+    int flag=0,choice;
+
+cout<<"\n\t\t\tWELCOME TO THE V-MESSENGER\n";
+
+
+
+
+    while(1)
+{
+
+cout<<"\nPlease Enter your choice\n  1-Sign_up\n  2-Sign_in\n  3-Exit \n \n"<<endl;
+cin>>choice;
+
+switch(choice)
+{
+case 1:
+    {
+
+        string username,pwd;
+        cout<<"\nchoose a username\n";
+        cin>>username;
+        cout<<"\nchoose a password\n";
+        cin>>pwd;
+map<string,string>::iterator iuser;
+        if(user.empty())
+        {
+        user[username]=pwd;
+        }
+        else
+        {
+
+        for(iuser=user.begin();iuser!=user.end();iuser++)
+        {
+            if(iuser->first==username)
+            {
+                cout<<"\nSorry! username not available..please try with some other name\n";
+                break;
+            }
+            else
+              {user[username]=pwd;
+              break;}
+        }
+        }
+    break;
+    }
+
+
+ case 2:
+    {
+
+        string lusername,lpwd;
+        cout<<"\nenter your username\n";
+        cin>>lusername;
+        cout<<"\nenter your password\n";
+        cin>>lpwd;
+        map<string,string>::iterator iuser;
+        for(iuser=user.begin();iuser!=user.end();iuser++)
+        {
+            if(iuser->first==lusername && iuser->second==lpwd)
+            {
+                    cout<<"\nWELCOME "<<lusername<<"!!  You have successfully logged in \n";
+
+                    flag=1;
+                    page2(lusername);
+                    break;
+
+            }}
+
+
+            if(flag==0)
+                {
+                    cout<<"\nusername or password incorrect\n\t!!Please try again\n";
+                    break;
+                }
+
+break;
+        }
+
+
+case 3:
+    {
+
+        cout<<"\ndisplay\n";
+        map<string,string>::iterator iuser;
+        cout<<"\nall users\n";
+for(iuser=user.begin();iuser!=user.end();iuser++)
+{
+    cout<<iuser->first<<"\t"<<iuser->second;
+}
+        break;
+    }
+
+}
+if(flag==1)
+                {
+                    break;
+                }
+}
+}
+
+map<string, someone> f;
+
+void page2(string uname)
+{
+   
+int choice2,choice3;
+main_menu:
+    cout<<endl<<endl<<endl<<endl<<endl<<endl<<endl<<endl<<endl<<endl<<endl<<endl<<endl;
+    cout<<"\t\t\t     WELCOME    "<<uname<<endl<<endl;
+   
+    cout<<"\n\t    ***********Choose from following menu**********\n";
+    cout<<"\n1-Inbox\n2-Chat\n3-Friend_list\n4-Add friend\n5-Unfriend\n6-Group chat\n7-Log out\n";
+    cin>>choice2;
+    switch(choice2)
+    {
+    case 1:
+      {
+
+            f[uname].inbox(uname);
+ cout<<"\npress any number except '0' to go back to main menu\n";
+        cin>>choice3;
+        if(choice3)
+        goto main_menu;
+
+break;
+        }
+    case 2:
+        {
+            string reciepient;
+            cout<<"\nPlease enter the reciepient's name:\n";
+            cin>>reciepient;
+            char message[100];
+        cout<<"\nPlease Type Your message :"<<endl;
+        cin.ignore();
+        cin.getline(message,100);
+            f[reciepient].chat_on(uname,reciepient,message);
+            cout<<"\nYour message has been sent\n";
+            cout<<"\npress any number except '0' to go back to main menu\n";
+        cin>>choice3;
+        if(choice3)
+        goto main_menu;
+
+break;
+
+        }
+    case 3:
+        {
+           f[uname].show_friend(uname);
+           cout<<"\npress any number except '0' to go back to main menu\n";
+        cin>>choice3;
+        if(choice3)
+        goto main_menu;
+      break;
+       }
+    case 4:
+        {
+        f[uname].new_friend(uname);
+        cout<<"\npress any number except '0' to go back to main menu\n";
+        cin>>choice3;
+if(choice3)
+        goto main_menu;
+        break;
+        }
+    case 5:
+        {
+        f[uname].delete_friend(uname);
+        cout<<"\npress any number except '0' to go back to main menu\n";
+        cin>>choice3;
+if(choice3)
+        goto main_menu;
+        break;}
+
+
+    case 6:
+        {
+
+    char ch;
+
+    vector<string>rec;
+    map<string,string>::iterator iuser;
+    vector<string>::iterator irec;
+group:
+    int flag=0;
+        string reciepient;
+    cout<<"Enter reciepient";
+    cin>>reciepient;
+
+    for(iuser=user.begin();iuser!=user.end();iuser++)
+        {
+            if(iuser->first==reciepient)
+            {
+                flag++;
+            }
+        }
+        if(!flag)
+        {
+            cout<<"\nSorry!! No such user exist\a\a\n";
+            goto group;
+        }
+
+    rec.push_back(reciepient);
+    cout<<"Do you want to add more reciepients (y/n)?\n";
+    cin>>ch;
+
+    if(ch=='y')
+        goto group;
+
+    else if(ch=='n')
+    {
+         char message[100];
+        cout<<"\nPlease Type Your message :"<<endl;
+        cin.ignore();
+        cin.getline(message,100);
+         for(irec=rec.begin();irec!=rec.end();irec++)
+        {
+            f[*irec].chat_on(uname,*irec,message);
+        }
+    }
+    cout<<"\nYour message has been sent\n";
+    cout<<"\npress any number except '0' to go back to main menu\n";
+        cin>>choice3;
+if(choice3)
+        goto main_menu;
+        break;
+        }
+
+case 7:
+    {
+        system("cls");
+        cout<<"\nyou have been successfully logged out\n";
+
+        page1();
+
+
+        break;
+
+    }
+}
 }
 
